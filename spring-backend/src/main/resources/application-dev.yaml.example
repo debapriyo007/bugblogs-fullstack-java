@@ -1,0 +1,44 @@
+# Template for local development configurations.
+# Copy this file to application-dev.yaml and fill in your actual credentials.
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/blog_db
+    username: root
+    password: your_local_mysql_password
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: your-google-client-id
+            client-secret: your-google-client-secret
+  mail:
+    host: smtp-relay.brevo.com
+    port: 587
+    username: your-brevo-username
+    password: your-brevo-smtp-key
+    from: your-from-email@domain.com
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+        debug: false
+
+app:
+  jwt:
+    secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+    expiration: 86400000
+  cloudinary:
+    cloud-name: your-cloudinary-cloud-name
+    api-key: your-cloudinary-api-key
+    api-secret: your-cloudinary-api-secret
+    folder: blog-app/blog-images
