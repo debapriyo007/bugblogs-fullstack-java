@@ -16,9 +16,13 @@
 # Project specific targets
 target/
 spring-backend/target/
-frontend/dist/
-frontend/dist-ssr/
-frontend/node_modules/
+# Ignore all of frontend except services/api.js
+frontend/*
+!frontend/src/
+frontend/src/*
+!frontend/src/services/
+frontend/src/services/*
+!frontend/src/services/api.js
 
 # Logs
 logs/
