@@ -15,31 +15,31 @@ BugBlogs is a high-performance, full-stack blogging application tailored for dev
 
 ---
 
-## 📖 Table of Contents
-1. [Key Features](#-key-features)
-2. [Architecture Overview](#-architecture-overview)
-3. [Technology Stack](#%EF%B8%8F-technology-stack)
-4. [Project Directory Map](#-project-directory-map)
-5. [Local Development Setup](#%EF%B8%8F-local-development-setup)
-6. [Environment Configurations](#%EF%B8%8F-environment-configurations)
-7. [Dockerization Guide (Desktop GUI / CLI)](#-dockerization-guide-desktop-gui--cli)
-8. [Unified Production Build (Topology A)](#-unified-production-build-topology-a)
-9. [Postman Integration testing](#-postman-integration-testing)
+## Table of Contents
+1. [Key Features](#key-features)
+2. [Architecture Overview](#architecture-overview)
+3. [Technology Stack](#technology-stack)
+4. [Project Directory Map](#project-directory-map)
+5. [Local Development Setup](#local-development-setup)
+6. [Environment Configurations](#environment-configurations)
+7. [Dockerization Guide](#dockerization-guide)
+8. [Unified Production Build (Topology A)](#unified-production-build-topology-a)
+9. [Postman Integration Testing](#postman-integration-testing)
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
-*   **🔒 Secure Sessions & Auth**: JWT authentication utilizing secure, stateless HTTP-Only cookies for robust cross-site scripting (XSS) and cross-site request forgery (CSRF) protection.
-*   **📧 OTP & OAuth2 Sign-In**: Supports single-click Google Sign-In as well as password-less logins via secure OTP (One-Time Password) codes sent straight to the user's inbox.
-*   **📝 Markdown Editor**: Real-time parsed Markdown view enabling developers to write technical posts with instant preview and syntax highlighting for major programming languages.
-*   **🖼️ Cloud Storage**: Seamless media upload handling directly integrated with Cloudinary for fast CDN-driven image delivery.
-*   **📊 Admin Console**: Access statistical oversight graphs (users growth, category counts, top stories) and role control centers to manage post moderation and users accounts.
-*   **🌟 Interactions**: Built-in views, likes, and comment threads for maximum community engagement.
+*   **Secure Sessions & Auth**: JWT authentication utilizing secure, stateless HTTP-Only cookies for robust cross-site scripting (XSS) and cross-site request forgery (CSRF) protection.
+*   **OTP & OAuth2 Sign-In**: Supports single-click Google Sign-In as well as password-less logins via secure OTP (One-Time Password) codes sent straight to the user's inbox.
+*   **Markdown Editor**: Real-time parsed Markdown view enabling developers to write technical posts with instant preview and syntax highlighting for major programming languages.
+*   **Cloud Storage**: Seamless media upload handling directly integrated with Cloudinary for fast CDN-driven image delivery.
+*   **Admin Console**: Access statistical oversight graphs (users growth, category counts, top stories) and role control centers to manage post moderation and users accounts.
+*   **Interactions**: Built-in views, likes, and comment threads for maximum community engagement.
 
 ---
 
-## 📐 Architecture Overview
+## Architecture Overview
 
 The following diagram illustrates the network flow and service communication:
 
@@ -54,26 +54,32 @@ graph TD
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
-### Backend
-*   **Framework:** Spring Boot 4.0.6 (built with Java 25)
-*   **Security:** Spring Security (stateless filters, BCrypt encoders, JWT validation)
-*   **Database Access:** Spring Data JPA + Hibernate ORM mapping
-*   **Email Engine:** Spring Boot Starter Mail (Brevo SMTP integration)
-*   **Storage Cloud:** Cloudinary Java SDK Integration
-*   **Build Pipeline:** Apache Maven
+### Backend Technologies
+| Component | Technology | Description |
+| :--- | :--- | :--- |
+| **Language** | ![Java](https://img.shields.io/badge/Java-ED8B00?style=flat-square&logo=openjdk&logoColor=white) | Core application runtime environment (Java 25) |
+| **Framework** | ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=flat-square&logo=spring-boot&logoColor=white) | Core REST API backend architecture (v4.0.6) |
+| **Security** | ![Spring Security](https://img.shields.io/badge/Spring_Security-6DB33F?style=flat-square&logo=spring-security&logoColor=white) | Stateless authentication using JWT cookies & Google OAuth2 |
+| **Database** | ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white) | Main relational database management system |
+| **ORM** | ![Hibernate](https://img.shields.io/badge/Hibernate-59666C?style=flat-square&logo=hibernate&logoColor=white) | Data access layer, entity mappings and query parsing |
+| **Build System** | ![Maven](https://img.shields.io/badge/Maven-C71A36?style=flat-square&logo=apache-maven&logoColor=white) | Project dependencies compilation and builder |
+| **Cloud CDN** | ![Cloudinary](https://img.shields.io/badge/Cloudinary-3448C5?style=flat-square&logo=cloudinary&logoColor=white) | Distributed media upload hosting API |
+| **Mail Dispatcher** | ![Brevo](https://img.shields.io/badge/Brevo-3C4DF3?style=flat-square&logo=brevo&logoColor=white) | SMTP mailing engine for verification OTP dispatch |
 
-### Frontend
-*   **Framework & Build:** React 19 + Vite v8.0.16
-*   **Routing:** React Router DOM v7
-*   **Style Engine:** TailwindCSS 3.4
-*   **Components:** Radix UI primitives (Dropdowns, Dialog boxes, Form elements)
-*   **Parsing Utilities:** Marked (Markdown parser) & Highlight.js (syntax coloring)
+
+### Frontend Technologies
+| Component | Technology | Description |
+| :--- | :--- | :--- |
+| **SPA Library** | ![React](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black) | Component-driven user interface rendering (v19) |
+| **Build Engine** | ![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white) | Bundler & high-speed development server (v8) |
+| **Style Sheet** | ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white) | Utility-first responsive spacing layout guidelines (v3.4) |
+| **Components** | ![Radix UI](https://img.shields.io/badge/Radix_UI-161618?style=flat-square&logo=radix-ui&logoColor=white) | Unstyled accessible dropdowns, dialogs, and panels |
 
 ---
 
-## 📂 Project Directory Map
+## Project Directory Map
 
 ```text
 ├── frontend/                  # React Frontend Application
@@ -105,7 +111,7 @@ graph TD
 
 ---
 
-## 🛠️ Local Development Setup
+## Local Development Setup
 
 ### Prerequisite Checklist
 *   **Java:** JDK 25 installed
@@ -141,7 +147,7 @@ graph TD
 
 ---
 
-## ⚙️ Environment Configurations
+## Environment Configurations
 
 For deployments or container overrides, configure the variables listed below:
 
@@ -167,7 +173,7 @@ For deployments or container overrides, configure the variables listed below:
 
 ---
 
-## 🐳 Dockerization Guide (Desktop GUI / CLI)
+## Dockerization Guide
 
 ### 1. Build the Docker Image
 Navigate to your `spring-backend` directory and compile the multi-stage image:
@@ -190,7 +196,7 @@ docker build -t blog-backend:latest .
 
 ---
 
-## 📦 Unified Production Build (Topology A)
+## Unified Production Build (Topology A)
 
 For ease of hosting, compile the frontend assets directly inside the JAR to serve the app on a single unified port:
 
@@ -215,7 +221,7 @@ For ease of hosting, compile the frontend assets directly inside the JAR to serv
 
 ---
 
-## 🚀 Postman Integration Testing
+## Postman Integration Testing
 To test the API endpoints independently:
 1. Locate [postman_collection.json](file:///Users/debapriyodas/Desktop/blog-appV0.1/spring-backend/postman_collection.json) in the `spring-backend` directory.
 2. Import it into Postman.
