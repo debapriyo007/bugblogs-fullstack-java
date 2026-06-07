@@ -15,20 +15,20 @@ BugBlogs is a high-performance, full-stack blogging application tailored for dev
 
 ---
 
-## 📋 Table of Contents
-1. [🚀 Key Features](#key-features)
-2. [📐 Architecture Overview](#architecture-overview)
-3. [🛠️ Technology Stack](#technology-stack)
-4. [📂 Project Directory Map](#project-directory-map)
-5. [🛠️ Local Development Setup](#local-development-setup)
-6. [⚙️ Environment Configurations](#environment-configurations)
-7. [🐳 Dockerization Guide](#dockerization-guide)
-8. [📦 Unified Production Build (Topology A)](#unified-production-build-topology-a)
-9. [🚀 Postman Integration Testing](#postman-integration-testing)
+## Table of Contents
+1. [Key Features](#key-features)
+2. [Architecture Overview](#architecture-overview)
+3. [Technology Stack](#technology-stack)
+4. [Project Directory Map](#project-directory-map)
+5. [Local Development Setup](#local-development-setup)
+6. [Environment Configurations](#environment-configurations)
+7. [Dockerization Guide](#dockerization-guide)
+8. [Unified Production Build (Topology A)](#unified-production-build-topology-a)
+9. [Postman Integration Testing](#postman-integration-testing)
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
 *   **Secure Sessions & Auth**: JWT authentication utilizing secure, stateless HTTP-Only cookies for robust cross-site scripting (XSS) and cross-site request forgery (CSRF) protection.
 *   **OTP & OAuth2 Sign-In**: Supports single-click Google Sign-In as well as password-less logins via secure OTP (One-Time Password) codes sent straight to the user's inbox.
@@ -39,7 +39,7 @@ BugBlogs is a high-performance, full-stack blogging application tailored for dev
 
 ---
 
-## 📐 Architecture Overview
+## Architecture Overview
 
 The following diagram illustrates the network flow and service communication:
 
@@ -54,7 +54,7 @@ graph TD
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 ### Backend Technologies
 | Component | Technology | Description |
@@ -78,7 +78,7 @@ graph TD
 
 ---
 
-## 📂 Project Directory Map
+## Project Directory Map
 
 ```text
 ├── frontend/                  # React Frontend Application
@@ -110,7 +110,7 @@ graph TD
 
 ---
 
-## 🛠️ Local Development Setup
+## Local Development Setup
 
 ### Prerequisite Checklist
 *   **Java:** JDK 25 installed
@@ -146,7 +146,7 @@ graph TD
 
 ---
 
-## ⚙️ Environment Configurations
+## Environment Configurations
 
 For deployments or container overrides, configure the variables listed below:
 
@@ -172,7 +172,7 @@ For deployments or container overrides, configure the variables listed below:
 
 ---
 
-## 🐳 Dockerization Guide
+## Dockerization Guide
 
 ### 1. Build the Docker Image
 Navigate to your `spring-backend` directory and compile the multi-stage image:
@@ -195,7 +195,7 @@ docker build -t blog-backend:latest .
 
 ---
 
-## 📦 Unified Production Build (Topology A)
+## Unified Production Build (Topology A)
 
 For ease of hosting, compile the frontend assets directly inside the JAR to serve the app on a single unified port:
 
@@ -220,7 +220,7 @@ For ease of hosting, compile the frontend assets directly inside the JAR to serv
 
 ---
 
-## 🚀 Postman Integration Testing
+## Postman Integration Testing
 To test the API endpoints independently:
 1. Locate [postman_collection.json](file:///Users/debapriyodas/Desktop/blog-appV0.1/spring-backend/postman_collection.json) in the `spring-backend` directory.
 2. Import it into Postman.
