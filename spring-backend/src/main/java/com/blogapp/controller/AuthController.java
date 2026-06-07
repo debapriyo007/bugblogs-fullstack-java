@@ -2,6 +2,9 @@ package com.blogapp.controller;
 
 import com.blogapp.dto.request.LoginRequest;
 import com.blogapp.dto.request.RegisterRequest;
+import com.blogapp.dto.request.ForgotPasswordRequest;
+import com.blogapp.dto.request.ResetPasswordRequest;
+import com.blogapp.dto.request.VerifyOtpRequest;
 import com.blogapp.dto.response.ApiResponse;
 import com.blogapp.dto.response.AuthResponse;
 import com.blogapp.dto.response.UserResponse;
@@ -85,5 +88,23 @@ public class AuthController {
     public ResponseEntity<ApiResponse<Void>> resendOtp(@RequestParam String email) {
         userService.resendOtp(email);
         return ResponseEntity.ok(ApiResponse.success("A new verification OTP code has been dispatched."));
+    }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<ApiResponse<Void>> forgotPassword(@Valid @RequestBody ForgotPasswordRequest request) {
+        userService.sendForgotPasswordOtp(request.getEmail());
+        return ResponseEntity.ok(ApiResponse.success("Password reset OTP code has been sent to your email."));
+    }
+
+    @PostMapping("/verify-reset-otp")
+    public ResponseEntity<ApiResponse<Void>> verifyResetOtp(@Valid @RequestBody VerifyOtpRequest request) {
+        userService.verifyForgotPasswordOtp(request);
+        return ResponseEntity.ok(ApiResponse.success("OTP verified successfully."));
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<ApiResponse<Void>> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
+        userService.resetPassword(request);
+        return ResponseEntity.ok(ApiResponse.success("Password has been reset successfully."));
     }
 }

@@ -46,20 +46,6 @@ public class EmailServiceImpl implements EmailService {
             }
         }
 
-        // Highlighted ASCII output in backend terminal console for developer sandbox testing
-        System.out.println("\n" +
-                "┌────────────────────────────────────────────────────────┐\n" +
-                "│               [ bugblogs DEVELOPMENT OTP ]             │\n" +
-                "├────────────────────────────────────────────────────────┤\n" +
-                "│  TO:       " + String.format("%-44s", toEmail) + "│\n" +
-                "│  USER:     " + String.format("%-44s", username) + "│\n" +
-                "│                                                        │\n" +
-                "│  YOUR OTP CODE IS:                                     │\n" +
-                "│  >>  \u001B[1;31m" + otp + "\u001B[0m  <<                                           │\n" +
-                "│                                                        │\n" +
-                "│  (Valid for 5 minutes. Enter this code on the UI)      │\n" +
-                "└────────────────────────────────────────────────────────┘\n"
-        );
     }
 
     private String loadOtpTemplate(String username, String otp) {
@@ -70,6 +56,39 @@ public class EmailServiceImpl implements EmailService {
         } catch (Exception e) {
             logger.error("Failed to load email template, falling back to basic text", e);
             return "Hello " + username + ",\n\nTo verify your account, please enter the following OTP code: " + otp;
+        }
+    }
+
+    @Override
+    public void sendResetPasswordOtpEmail(String toEmail, String username, String otp) {
+        String subject = "Reset Your Password";
+        String htmlContent = loadResetPasswordTemplate(username, otp);
+
+        if (mailSender != null) {
+            try {
+                MimeMessage mimeMessage = mailSender.createMimeMessage();
+                MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+                helper.setFrom(fromEmail, "bugblogs");
+                helper.setTo(toEmail);
+                helper.setSubject(subject);
+                helper.setText(htmlContent, true);
+                mailSender.send(mimeMessage);
+                logger.info("Password reset OTP HTML email successfully dispatched to: {}", toEmail);
+            } catch (Exception e) {
+                logger.warn("Could not dispatch password reset SMTP email. Falling back to console logging: {}", e.getMessage(), e);
+            }
+        }
+
+    }
+
+    private String loadResetPasswordTemplate(String username, String otp) {
+        try {
+            ClassPathResource resource = new ClassPathResource("mail-templates/reset-password-template.html");
+            String template = StreamUtils.copyToString(resource.getInputStream(), StandardCharsets.UTF_8);
+            return template.replace("${username}", username).replace("${otp}", otp);
+        } catch (Exception e) {
+            logger.error("Failed to load reset password template, falling back to basic text", e);
+            return "Hello " + username + ",\n\nWe received a request to reset your password. Use the following OTP code: " + otp;
         }
     }
 }

@@ -3,6 +3,8 @@ package com.blogapp.service.impl;
 import com.blogapp.dto.request.LoginRequest;
 import com.blogapp.dto.request.RegisterRequest;
 import com.blogapp.dto.request.UserUpdateRequest;
+import com.blogapp.dto.request.ResetPasswordRequest;
+import com.blogapp.dto.request.VerifyOtpRequest;
 import com.blogapp.dto.response.AuthResponse;
 import com.blogapp.dto.response.UserResponse;
 import com.blogapp.entity.User;
@@ -260,5 +262,53 @@ public class UserServiceImpl implements UserService {
         }
         currentUser.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepository.save(currentUser);
+    }
+
+    @Override
+    public void sendForgotPasswordOtp(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
+
+        String otp = String.format("%06d", new java.util.Random().nextInt(1000000));
+        java.time.LocalDateTime expiry = java.time.LocalDateTime.now().plusMinutes(5);
+
+        user.setVerificationOtp(otp);
+        user.setOtpExpiryTime(expiry);
+        userRepository.save(user);
+
+        emailService.sendResetPasswordOtpEmail(user.getEmail(), user.getUsername(), otp);
+    }
+
+    @Override
+    public void verifyForgotPasswordOtp(VerifyOtpRequest request) {
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + request.getEmail()));
+
+        if (user.getVerificationOtp() == null || !user.getVerificationOtp().equals(request.getOtp())) {
+            throw new IllegalArgumentException("Invalid OTP code");
+        }
+
+        if (user.getOtpExpiryTime() == null || user.getOtpExpiryTime().isBefore(java.time.LocalDateTime.now())) {
+            throw new IllegalArgumentException("OTP code has expired. Please request a new one.");
+        }
+    }
+
+    @Override
+    public void resetPassword(ResetPasswordRequest request) {
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + request.getEmail()));
+
+        if (user.getVerificationOtp() == null || !user.getVerificationOtp().equals(request.getOtp())) {
+            throw new IllegalArgumentException("Invalid OTP code");
+        }
+
+        if (user.getOtpExpiryTime() == null || user.getOtpExpiryTime().isBefore(java.time.LocalDateTime.now())) {
+            throw new IllegalArgumentException("OTP code has expired. Please request a new one.");
+        }
+
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        user.setVerificationOtp(null);
+        user.setOtpExpiryTime(null);
+        userRepository.save(user);
     }
 }

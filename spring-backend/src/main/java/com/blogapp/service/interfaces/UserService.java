@@ -3,6 +3,9 @@ package com.blogapp.service.interfaces;
 import com.blogapp.dto.request.LoginRequest;
 import com.blogapp.dto.request.RegisterRequest;
 import com.blogapp.dto.request.UserUpdateRequest;
+import com.blogapp.dto.request.VerifyOtpRequest;
+import com.blogapp.dto.request.ChangePasswordRequest;
+import com.blogapp.dto.request.ResetPasswordRequest;
 import com.blogapp.dto.response.AuthResponse;
 import com.blogapp.dto.response.UserResponse;
 import com.blogapp.entity.User;
@@ -18,7 +21,10 @@ public interface UserService {
     Page<UserResponse> getAllUsers(Pageable pageable);
     long countAllUsers();
     Page<UserResponse> searchUsers(String keyword, Pageable pageable);
-    AuthResponse verifyOtp(com.blogapp.dto.request.VerifyOtpRequest request);
+    AuthResponse verifyOtp(VerifyOtpRequest request);
     void resendOtp(String email);
-    void changePassword(com.blogapp.dto.request.ChangePasswordRequest request, User currentUser);
+    void changePassword(ChangePasswordRequest request, User currentUser);
+    void sendForgotPasswordOtp(String email);
+    void verifyForgotPasswordOtp(VerifyOtpRequest request);
+    void resetPassword(ResetPasswordRequest request);
 }
