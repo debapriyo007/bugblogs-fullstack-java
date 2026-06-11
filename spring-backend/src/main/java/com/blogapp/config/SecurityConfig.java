@@ -29,25 +29,21 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
     private final OAuth2AuthenticationSuccessHandler oauth2SuccessHandler;
     private final PasswordEncoder passwordEncoder;
-    private final String frontendUrl;
 
     public SecurityConfig(
             JwtAuthenticationFilter jwtAuthFilter,
             UserDetailsService userDetailsService,
             OAuth2AuthenticationSuccessHandler oauth2SuccessHandler,
-            PasswordEncoder passwordEncoder,
-            @org.springframework.beans.factory.annotation.Value("${app.frontend-url}") String frontendUrl) {
+            PasswordEncoder passwordEncoder) {
         this.jwtAuthFilter = jwtAuthFilter;
         this.userDetailsService = userDetailsService;
         this.oauth2SuccessHandler = oauth2SuccessHandler;
         this.passwordEncoder = passwordEncoder;
-        this.frontendUrl = frontendUrl;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint(
@@ -74,30 +70,13 @@ public class SecurityConfig {
                         .successHandler(oauth2SuccessHandler)
                         .failureHandler((request, response, exception) -> {
                             String errorMessage = exception.getMessage();
-                            response.sendRedirect(frontendUrl + "/auth?error=" +
+                            response.sendRedirect("http://localhost:5173/auth?error=" +
                                     java.net.URLEncoder.encode(
                                             errorMessage != null ? errorMessage : "OAuth2 authentication failed",
                                             java.nio.charset.StandardCharsets.UTF_8));
                         }));
 
         return http.build();
-    }
-
-    @Bean
-    public org.springframework.web.cors.CorsConfigurationSource corsConfigurationSource() {
-        org.springframework.web.cors.CorsConfiguration configuration = new org.springframework.web.cors.CorsConfiguration();
-        configuration.addAllowedOrigin(frontendUrl);
-        if (!frontendUrl.contains("localhost")) {
-            configuration.addAllowedOrigin("http://localhost:5173");
-        }
-        configuration.addAllowedOrigin("https://bugblogs.netlify.app");
-        configuration.addAllowedHeader("*");
-        configuration.addAllowedMethod("*");
-        configuration.setAllowCredentials(true);
-
-        org.springframework.web.cors.UrlBasedCorsConfigurationSource source = new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
     }
 
     @Bean

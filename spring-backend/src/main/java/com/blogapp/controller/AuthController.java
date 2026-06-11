@@ -23,15 +23,10 @@ public class AuthController {
 
     private final UserService userService;
     private final JwtService jwtService;
-    private final String frontendUrl;
 
-    public AuthController(
-            UserService userService,
-            JwtService jwtService,
-            @org.springframework.beans.factory.annotation.Value("${app.frontend-url}") String frontendUrl) {
+    public AuthController(UserService userService, JwtService jwtService) {
         this.userService = userService;
         this.jwtService = jwtService;
-        this.frontendUrl = frontendUrl;
     }
 
     @PostMapping("/register")
@@ -46,18 +41,27 @@ public class AuthController {
             HttpServletResponse response) {
         AuthResponse authResponse = userService.login(request);
 
-        ResponseCookie cookie = createJwtCookie(authResponse.getToken(), jwtService.getJwtExpirationInSeconds());
+        ResponseCookie cookie = ResponseCookie.from("jwt_token", authResponse.getToken())
+                .httpOnly(true)
+                .secure(false) // Set to true in production over HTTPS
+                .path("/")
+                .maxAge(jwtService.getJwtExpirationInSeconds())
+                .sameSite("Lax")
+                .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
-        UserResponse userResponse = authResponse.getUser();
-        userResponse.setToken(authResponse.getToken());
-
-        return ResponseEntity.ok(ApiResponse.success("Login successful", userResponse));
+        return ResponseEntity.ok(ApiResponse.success("Login successful", authResponse.getUser()));
     }
 
     @PostMapping("/logout")
     public ResponseEntity<ApiResponse<Void>> logout(HttpServletResponse response) {
-        ResponseCookie cookie = createJwtCookie("", 0);
+        ResponseCookie cookie = ResponseCookie.from("jwt_token", "")
+                .httpOnly(true)
+                .secure(false) // Set to true in production over HTTPS
+                .path("/")
+                .maxAge(0) // Expire immediately
+                .sameSite("Lax")
+                .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         return ResponseEntity.ok(ApiResponse.success("Logout successful"));
     }
@@ -68,13 +72,16 @@ public class AuthController {
             HttpServletResponse response) {
         AuthResponse authResponse = userService.verifyOtp(request);
 
-        ResponseCookie cookie = createJwtCookie(authResponse.getToken(), jwtService.getJwtExpirationInSeconds());
+        ResponseCookie cookie = ResponseCookie.from("jwt_token", authResponse.getToken())
+                .httpOnly(true)
+                .secure(false) // Set to true in production over HTTPS
+                .path("/")
+                .maxAge(jwtService.getJwtExpirationInSeconds())
+                .sameSite("Lax")
+                .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
-        UserResponse userResponse = authResponse.getUser();
-        userResponse.setToken(authResponse.getToken());
-
-        return ResponseEntity.ok(ApiResponse.success("Verification and login successful", userResponse));
+        return ResponseEntity.ok(ApiResponse.success("Verification and login successful", authResponse.getUser()));
     }
 
     @PostMapping("/resend-otp")
@@ -99,16 +106,5 @@ public class AuthController {
     public ResponseEntity<ApiResponse<Void>> resetPassword(@Valid @RequestBody ResetPasswordRequest request) {
         userService.resetPassword(request);
         return ResponseEntity.ok(ApiResponse.success("Password has been reset successfully."));
-    }
-
-    private ResponseCookie createJwtCookie(String token, long maxAge) {
-        boolean isLocal = frontendUrl.contains("localhost");
-        return ResponseCookie.from("jwt_token", token)
-                .httpOnly(true)
-                .secure(!isLocal)
-                .path("/")
-                .maxAge(maxAge)
-                .sameSite(isLocal ? "Lax" : "None")
-                .build();
     }
 }

@@ -1,10 +1,4 @@
-const BASE_URL = import.meta.env.VITE_API_BASE_URL || ""
-
 async function request(url, options = {}) {
-  const targetUrl = url.startsWith("/api") && !url.startsWith("http")
-    ? `${BASE_URL}${url}`
-    : url
-
   const headers = new Headers(options.headers || {})
 
   // Only set Content-Type to application/json if we are NOT sending FormData
@@ -12,20 +6,7 @@ async function request(url, options = {}) {
     headers.set("Content-Type", "application/json")
   }
 
-  // Inject Bearer token from localStorage if available
-  const savedUser = localStorage.getItem("user")
-  if (savedUser) {
-    try {
-      const parsed = JSON.parse(savedUser)
-      if (parsed && parsed.token) {
-        headers.set("Authorization", `Bearer ${parsed.token}`)
-      }
-    } catch (e) {
-      console.error("Error parsing user token from localStorage:", e)
-    }
-  }
-
-  const response = await fetch(targetUrl, {
+  const response = await fetch(url, {
     ...options,
     headers,
     credentials: "include",
@@ -40,26 +21,17 @@ async function request(url, options = {}) {
   }
 
   let result
-  const contentType = response.headers.get("content-type")
-  const isJson = contentType && contentType.includes("application/json")
-
   try {
-    if (isJson) {
-      result = await response.json()
-    } else {
-      const text = await response.text()
-      if (text.trim() === "") {
-        result = {
-          success: true,
-          message: "Operation completed",
-          data: null,
-        }
-      } else {
-        throw new Error("Server returned non-JSON response")
-      }
-    }
+    result = await response.json()
   } catch (err) {
-    throw new Error(`Failed to parse server response: ${err.message}`, { cause: err })
+    if (!response.ok) {
+      throw new Error(`HTTP Error: ${response.status} ${response.statusText}`, { cause: err })
+    }
+    result = {
+      success: true,
+      message: "Operation completed",
+      data: null,
+    }
   }
 
   if (!response.ok || !result.success) {

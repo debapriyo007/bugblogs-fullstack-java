@@ -25,17 +25,14 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private final JwtService jwtService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final String frontendUrl;
 
     public OAuth2AuthenticationSuccessHandler(
             JwtService jwtService,
             UserRepository userRepository,
-            PasswordEncoder passwordEncoder,
-            @org.springframework.beans.factory.annotation.Value("${app.frontend-url}") String frontendUrl) {
+            PasswordEncoder passwordEncoder) {
         this.jwtService = jwtService;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.frontendUrl = frontendUrl;
     }
 
     @Override
@@ -60,18 +57,17 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         String jwtToken = jwtService.generateToken(userDetails);
 
         // 3. Set jwt_token in HttpOnly cookie (matches AuthController logic)
-        boolean isLocal = frontendUrl.contains("localhost");
         ResponseCookie cookie = ResponseCookie.from("jwt_token", jwtToken)
                 .httpOnly(true)
-                .secure(!isLocal)
+                .secure(false) // Set to true in production over HTTPS
                 .path("/")
                 .maxAge(jwtService.getJwtExpirationInSeconds())
-                .sameSite(isLocal ? "Lax" : "None")
+                .sameSite("Lax")
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
         // 4. Redirect to the React frontend OAuth2 success handler route
-        String targetUrl = frontendUrl + "/oauth2/redirect?token=" + jwtToken;
+        String targetUrl = "http://localhost:5173/oauth2/redirect";
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 

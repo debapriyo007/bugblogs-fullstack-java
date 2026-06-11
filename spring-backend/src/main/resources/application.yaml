@@ -1,6 +1,5 @@
 server:
   port: ${PORT:8080}
-  forward-headers-strategy: framework
 
 spring:
   profiles:
@@ -38,16 +37,12 @@ spring:
       mail:
         smtp:
           auth: true
-          connectiontimeout: 5000
-          timeout: 5000
-          writetimeout: 5000
           starttls:
             enable: true
             required: true
         debug: false
 
 app:
-  frontend-url: ${FRONTEND_URL:http://localhost:5173}
   jwt:
     secret: ${JWT_SECRET}
     expiration: ${JWT_EXPIRATION:86400000}
