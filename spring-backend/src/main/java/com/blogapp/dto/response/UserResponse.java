@@ -19,4 +19,5 @@ public class UserResponse {
     private boolean verified;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private String token;
 }

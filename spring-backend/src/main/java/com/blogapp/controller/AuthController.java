@@ -49,7 +49,10 @@ public class AuthController {
         ResponseCookie cookie = createJwtCookie(authResponse.getToken(), jwtService.getJwtExpirationInSeconds());
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
-        return ResponseEntity.ok(ApiResponse.success("Login successful", authResponse.getUser()));
+        UserResponse userResponse = authResponse.getUser();
+        userResponse.setToken(authResponse.getToken());
+
+        return ResponseEntity.ok(ApiResponse.success("Login successful", userResponse));
     }
 
     @PostMapping("/logout")
@@ -68,7 +71,10 @@ public class AuthController {
         ResponseCookie cookie = createJwtCookie(authResponse.getToken(), jwtService.getJwtExpirationInSeconds());
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
-        return ResponseEntity.ok(ApiResponse.success("Verification and login successful", authResponse.getUser()));
+        UserResponse userResponse = authResponse.getUser();
+        userResponse.setToken(authResponse.getToken());
+
+        return ResponseEntity.ok(ApiResponse.success("Verification and login successful", userResponse));
     }
 
     @PostMapping("/resend-otp")

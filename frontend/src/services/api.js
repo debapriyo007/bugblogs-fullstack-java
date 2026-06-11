@@ -12,6 +12,19 @@ async function request(url, options = {}) {
     headers.set("Content-Type", "application/json")
   }
 
+  // Inject Bearer token from localStorage if available
+  const savedUser = localStorage.getItem("user")
+  if (savedUser) {
+    try {
+      const parsed = JSON.parse(savedUser)
+      if (parsed && parsed.token) {
+        headers.set("Authorization", `Bearer ${parsed.token}`)
+      }
+    } catch (e) {
+      console.error("Error parsing user token from localStorage:", e)
+    }
+  }
+
   const response = await fetch(targetUrl, {
     ...options,
     headers,

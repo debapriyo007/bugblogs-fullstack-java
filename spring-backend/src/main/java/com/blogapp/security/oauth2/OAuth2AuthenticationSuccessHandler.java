@@ -71,7 +71,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
         // 4. Redirect to the React frontend OAuth2 success handler route
-        String targetUrl = frontendUrl + "/oauth2/redirect";
+        String targetUrl = frontendUrl + "/oauth2/redirect?token=" + jwtToken;
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
