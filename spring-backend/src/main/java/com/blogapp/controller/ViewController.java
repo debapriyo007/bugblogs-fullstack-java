@@ -8,8 +8,8 @@ public class ViewController {
 
     @RequestMapping(value = {
         "/",
-        "/{path:(?!api)[^\\.]*}",
-        "/{path:(?!api)[^\\.]*}/**"
+        "/{path:(?!api|assets|favicon|vite|uploads)[^\\.]*}",
+        "/{path:(?!api|assets|favicon|vite|uploads)[^\\.]*}/**"
     })
     public String forward() {
         return "forward:/index.html";
