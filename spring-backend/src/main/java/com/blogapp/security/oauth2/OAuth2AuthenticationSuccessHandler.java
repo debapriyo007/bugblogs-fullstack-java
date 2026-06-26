@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
+import org.springframework.beans.factory.annotation.Value;
 import java.io.IOException;
 import java.util.UUID;
 
@@ -25,6 +26,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private final JwtService jwtService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @Value("${app.frontend-url}")
+    private String frontendUrl;
 
     public OAuth2AuthenticationSuccessHandler(
             JwtService jwtService,
@@ -67,7 +71,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 
         // 4. Redirect to the React frontend OAuth2 success handler route
-        String targetUrl = "http://localhost:5173/oauth2/redirect";
+        String targetUrl = frontendUrl + "/oauth2/redirect?token=" + jwtToken;
         getRedirectStrategy().sendRedirect(request, response, targetUrl);
     }
 
