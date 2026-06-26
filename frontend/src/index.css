@@ -1,0 +1,282 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 240 10% 3.9%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 240 4.9% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground transition-colors duration-300;
+    font-family: 'Outfit', sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+    letter-spacing: -0.02em;
+  }
+}
+
+/* Custom gorgeous animations & enhancements */
+.glassmorphism {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.dark .glassmorphism {
+  background: rgba(9, 9, 11, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-muted-foreground/20 rounded-full hover:bg-muted-foreground/30 transition-colors;
+}
+
+/* Custom typography readable line spacing */
+.prose-editor {
+  line-height: 1.8;
+  font-size: 1.1rem;
+}
+
+/* Premium Markdown Content Styling */
+.markdown-content h1 {
+  @apply text-3xl font-extrabold tracking-tight mt-6 mb-4 text-foreground border-b border-border/40 pb-2;
+}
+.markdown-content h2 {
+  @apply text-2xl font-bold tracking-tight mt-5 mb-3 text-foreground;
+}
+.markdown-content h3 {
+  @apply text-xl font-bold tracking-tight mt-4 mb-2 text-foreground;
+}
+.markdown-content p {
+  @apply mb-4 leading-relaxed text-muted-foreground dark:text-zinc-300;
+}
+.markdown-content ul {
+  @apply list-disc list-inside mb-4 pl-4 space-y-1 text-muted-foreground dark:text-zinc-300;
+}
+.markdown-content ol {
+  @apply list-decimal list-inside mb-4 pl-4 space-y-1 text-muted-foreground dark:text-zinc-300;
+}
+.markdown-content li {
+  @apply mb-1;
+}
+.markdown-content blockquote {
+  @apply border-l-4 border-primary pl-4 italic my-4 text-muted-foreground bg-muted/20 py-2 pr-2 rounded-r-lg;
+}
+.markdown-content :not(pre) > code {
+  @apply bg-zinc-100 dark:bg-zinc-800 text-rose-600 dark:text-amber-400 px-1.5 py-0.5 rounded font-mono text-[0.82em] font-semibold;
+}
+
+/* ─── IDE-Style Code Block ─────────────────────────────────────────── */
+.code-block-wrapper {
+  @apply my-6 rounded-xl overflow-hidden border border-zinc-700/60 shadow-2xl;
+  font-family: 'Outfit', sans-serif;
+}
+
+.code-block-header {
+  @apply flex items-center gap-2 px-4 py-2.5 bg-zinc-800 border-b border-zinc-700/80 select-none;
+}
+
+.code-block-dots {
+  @apply flex items-center gap-1.5 mr-2;
+}
+
+.dot {
+  @apply h-3 w-3 rounded-full;
+}
+.dot-red    { background: #ff5f57; }
+.dot-yellow { background: #febc2e; }
+.dot-green  { background: #28c840; }
+
+.code-block-lang {
+  @apply text-[11px] font-bold text-zinc-400 uppercase tracking-widest flex-1;
+}
+
+.code-copy-btn {
+  @apply flex items-center gap-1.5 text-[11px] font-semibold text-zinc-400 hover:text-zinc-100
+         bg-zinc-700/50 hover:bg-zinc-600/70 px-2.5 py-1 rounded-md transition-all duration-200
+         border border-zinc-600/40 hover:border-zinc-500/60 cursor-pointer;
+}
+
+.code-copy-btn--copied {
+  @apply text-emerald-400 bg-emerald-500/10 border-emerald-500/30;
+}
+
+.code-block-pre {
+  @apply bg-zinc-950 p-0 m-0 overflow-x-auto;
+  counter-reset: none;
+}
+
+.code-block-code {
+  @apply block py-3 px-4 bg-transparent;
+  font-family: inherit;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+/* Line rows */
+.code-line {
+  @apply flex items-stretch;
+  margin: 0;
+  padding: 0;
+}
+
+.line-num {
+  @apply text-zinc-600 select-none text-right pr-4 shrink-0;
+  min-width: 2.5rem;
+  font-size: 0.75rem;
+  line-height: 1.45;
+  border-right: 1px solid rgba(255,255,255,0.05);
+  margin-right: 0.75rem;
+}
+
+.line-content {
+  @apply flex-1 whitespace-pre;
+  line-height: 1.45;
+}
+
+/* highlight.js token colours – these complement the zinc-950 dark bg */
+.hljs-keyword    { color: #c792ea; }
+.hljs-built_in   { color: #82aaff; }
+.hljs-type       { color: #ffcb8b; }
+.hljs-literal    { color: #ff5370; }
+.hljs-number     { color: #f78c6c; }
+.hljs-string     { color: #c3e88d; }
+.hljs-comment    { color: #546e7a; font-style: italic; }
+.hljs-meta       { color: #80cbc4; }
+.hljs-attr       { color: #ffcb6b; }
+.hljs-tag        { color: #f07178; }
+.hljs-name       { color: #f07178; }
+.hljs-class\.name { color: #ffcb8b; }
+.hljs-function   { color: #82aaff; }
+.hljs-title      { color: #82aaff; }
+.hljs-params     { color: #eeffff; }
+.hljs-variable   { color: #eeffff; }
+.hljs-operator   { color: #89ddff; }
+.hljs-punctuation { color: #89ddff; }
+.hljs-property   { color: #80cbc4; }
+.hljs-symbol     { color: #f07178; }
+.hljs-regexp     { color: #c3e88d; }
+.hljs-subst      { color: #eeffff; }
+.hljs-section    { color: #82aaff; font-weight: bold; }
+.hljs-bullet     { color: #f07178; }
+.hljs-emphasis   { font-style: italic; }
+.hljs-strong     { font-weight: bold; }
+.hljs-addition   { color: #c3e88d; background: rgba(195,232,141,0.08); }
+.hljs-deletion   { color: #f07178; background: rgba(240,113,120,0.08); }
+
+.markdown-content a {
+  @apply text-primary underline hover:text-primary/80 transition-colors font-semibold;
+}
+.markdown-content img {
+  @apply rounded-xl max-w-full h-auto my-6 border border-border shadow-md mx-auto hover:scale-[1.01] transition-transform duration-200;
+}
+
+/* ─── Typing Animation and Crazy Line Underline ─────────────────────── */
+.typing-cursor {
+  display: inline-block;
+  font-weight: 200;
+  animation: blink-cursor 0.75s step-end infinite;
+}
+
+@keyframes blink-cursor {
+  from, to { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+.crazy-line-draw {
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  animation: draw-crazy-line 3s ease-in-out forwards;
+}
+
+@keyframes draw-crazy-line {
+  0% {
+    stroke-dashoffset: 200;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Hide default webkit search cancel button */
+input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+

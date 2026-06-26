@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <defs>
+    <!-- gradients with inlined hex values so they render correctly as favicon -->
+    <linearGradient id="prompt-gradient" x1="15" y1="30" x2="85" y2="70" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#f43f5e" />
+      <stop offset="100%" stop-color="#e11d48" />
+    </linearGradient>
+  </defs>
+
+  <g transform="translate(50, 50) scale(0.85) translate(-50, -50)">
+    <!-- ">" Prompt symbol -->
+    <path d="M 22 26 L 54 50 L 22 74" stroke="url(#prompt-gradient)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+    <!-- "_" Cursor -->
+    <rect x="58" y="64" width="24" height="10" rx="2" fill="#27272a" />
+  </g>
+</svg>
