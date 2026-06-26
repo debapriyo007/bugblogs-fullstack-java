@@ -29,6 +29,23 @@ public class EmailServiceImpl implements EmailService {
     @org.springframework.beans.factory.annotation.Value("${spring.mail.password:}")
     private String mailPassword;
 
+    @org.springframework.beans.factory.annotation.Value("${brevo.api-key:${BREVO_API_KEY:}}")
+    private String brevoApiKey;
+
+    private String getBrevoApiKey() {
+        if (brevoApiKey != null && !brevoApiKey.isBlank()) {
+            return brevoApiKey;
+        }
+        if (mailPassword != null && mailPassword.startsWith("xkeysib-")) {
+            return mailPassword;
+        }
+        return null;
+    }
+
+    private boolean shouldSendViaHttp() {
+        return getBrevoApiKey() != null;
+    }
+
     private boolean sendViaBrevoApi(String toEmail, String subject, String htmlContent) {
         try {
             String payload = String.format(
@@ -44,7 +61,7 @@ public class EmailServiceImpl implements EmailService {
                     .uri(java.net.URI.create("https://api.brevo.com/v3/smtp/email"))
                     .header("accept", "application/json")
                     .header("content-type", "application/json")
-                    .header("api-key", mailPassword)
+                    .header("api-key", getBrevoApiKey())
                     .POST(java.net.http.HttpRequest.BodyPublishers.ofString(payload, java.nio.charset.StandardCharsets.UTF_8))
                     .build();
 
@@ -81,7 +98,7 @@ public class EmailServiceImpl implements EmailService {
 
         boolean emailSent = false;
 
-        if ("smtp-relay.brevo.com".equalsIgnoreCase(mailHost) || (mailPassword != null && mailPassword.startsWith("xsmtpsib-"))) {
+        if (shouldSendViaHttp()) {
             emailSent = sendViaBrevoApi(toEmail, subject, htmlContent);
         }
 
@@ -98,6 +115,11 @@ public class EmailServiceImpl implements EmailService {
                 emailSent = true;
             } catch (Exception e) {
                 logger.warn("Could not dispatch SMTP email: {}. Logging OTP directly.", e.getMessage());
+                if (mailPassword != null && mailPassword.startsWith("xsmtpsib-")) {
+                    logger.warn("WARNING: You are using a Brevo SMTP key (xsmtpsib-...) on a restricted environment (like Railway) which blocks SMTP ports 25, 465, and 587. " +
+                                "To fix this and send emails via HTTPS, please generate a Brevo REST API Key (starting with 'xkeysib-') " +
+                                "and configure it in the BREVO_API_KEY environment variable.");
+                }
             }
         }
 
@@ -127,7 +149,7 @@ public class EmailServiceImpl implements EmailService {
 
         boolean emailSent = false;
 
-        if ("smtp-relay.brevo.com".equalsIgnoreCase(mailHost) || (mailPassword != null && mailPassword.startsWith("xsmtpsib-"))) {
+        if (shouldSendViaHttp()) {
             emailSent = sendViaBrevoApi(toEmail, subject, htmlContent);
         }
 
@@ -144,6 +166,11 @@ public class EmailServiceImpl implements EmailService {
                 emailSent = true;
             } catch (Exception e) {
                 logger.warn("Could not dispatch password reset SMTP email: {}. Logging OTP directly.", e.getMessage());
+                if (mailPassword != null && mailPassword.startsWith("xsmtpsib-")) {
+                    logger.warn("WARNING: You are using a Brevo SMTP key (xsmtpsib-...) on a restricted environment (like Railway) which blocks SMTP ports 25, 465, and 587. " +
+                                "To fix this and send emails via HTTPS, please generate a Brevo REST API Key (starting with 'xkeysib-') " +
+                                "and configure it in the BREVO_API_KEY environment variable.");
+                }
             }
         }
 
