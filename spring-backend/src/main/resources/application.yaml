@@ -44,6 +44,7 @@ spring:
 
 app:
   frontend-url: ${FRONTEND_URL:http://localhost:5173}
+  cookie-secure: ${COOKIE_SECURE:false}
   jwt:
     secret: ${JWT_SECRET}
     expiration: ${JWT_EXPIRATION:86400000}

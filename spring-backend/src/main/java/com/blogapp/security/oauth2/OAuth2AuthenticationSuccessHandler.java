@@ -30,6 +30,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     @Value("${app.frontend-url}")
     private String frontendUrl;
 
+    @Value("${app.cookie-secure:false}")
+    private boolean cookieSecure;
+
     public OAuth2AuthenticationSuccessHandler(
             JwtService jwtService,
             UserRepository userRepository,
@@ -63,7 +66,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         // 3. Set jwt_token in HttpOnly cookie (matches AuthController logic)
         ResponseCookie cookie = ResponseCookie.from("jwt_token", jwtToken)
                 .httpOnly(true)
-                .secure(false) // Set to true in production over HTTPS
+                .secure(cookieSecure)
                 .path("/")
                 .maxAge(jwtService.getJwtExpirationInSeconds())
                 .sameSite("Lax")

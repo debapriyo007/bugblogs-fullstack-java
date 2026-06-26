@@ -24,6 +24,9 @@ public class AuthController {
     private final UserService userService;
     private final JwtService jwtService;
 
+    @org.springframework.beans.factory.annotation.Value("${app.cookie-secure:false}")
+    private boolean cookieSecure;
+
     public AuthController(UserService userService, JwtService jwtService) {
         this.userService = userService;
         this.jwtService = jwtService;
@@ -43,7 +46,7 @@ public class AuthController {
 
         ResponseCookie cookie = ResponseCookie.from("jwt_token", authResponse.getToken())
                 .httpOnly(true)
-                .secure(false) // Set to true in production over HTTPS
+                .secure(cookieSecure)
                 .path("/")
                 .maxAge(jwtService.getJwtExpirationInSeconds())
                 .sameSite("Lax")
@@ -57,7 +60,7 @@ public class AuthController {
     public ResponseEntity<ApiResponse<Void>> logout(HttpServletResponse response) {
         ResponseCookie cookie = ResponseCookie.from("jwt_token", "")
                 .httpOnly(true)
-                .secure(false) // Set to true in production over HTTPS
+                .secure(cookieSecure)
                 .path("/")
                 .maxAge(0) // Expire immediately
                 .sameSite("Lax")
@@ -74,7 +77,7 @@ public class AuthController {
 
         ResponseCookie cookie = ResponseCookie.from("jwt_token", authResponse.getToken())
                 .httpOnly(true)
-                .secure(false) // Set to true in production over HTTPS
+                .secure(cookieSecure)
                 .path("/")
                 .maxAge(jwtService.getJwtExpirationInSeconds())
                 .sameSite("Lax")

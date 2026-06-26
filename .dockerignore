@@ -1,0 +1,20 @@
+# Ignore build outputs
+**/node_modules
+**/dist
+**/target
+**/*.jar
+**/*.war
+
+# Ignore development/IDE files
+.git
+.gitignore
+.vscode
+.idea
+.DS_Store
+**/.DS_Store
+thumbs.db
+
+# Ignore maven files locally
+.mvn
+spring-backend/mvnw
+spring-backend/mvnw.cmd

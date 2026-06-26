@@ -30,6 +30,9 @@ public class SecurityConfig {
     private final OAuth2AuthenticationSuccessHandler oauth2SuccessHandler;
     private final PasswordEncoder passwordEncoder;
 
+    @org.springframework.beans.factory.annotation.Value("${app.frontend-url}")
+    private String frontendUrl;
+
     public SecurityConfig(
             JwtAuthenticationFilter jwtAuthFilter,
             UserDetailsService userDetailsService,
@@ -60,8 +63,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/users").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/users/count").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/users/**").hasRole("ADMIN")
-                        // All other requests require authentication
-                        .anyRequest().authenticated())
+                        // All other API requests require authentication
+                        .requestMatchers("/api/**").authenticated()
+                        // All general static assets and SPA pages can be accessed publicly
+                        .anyRequest().permitAll())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
@@ -70,7 +75,7 @@ public class SecurityConfig {
                         .successHandler(oauth2SuccessHandler)
                         .failureHandler((request, response, exception) -> {
                             String errorMessage = exception.getMessage();
-                            response.sendRedirect("http://localhost:5173/auth?error=" +
+                            response.sendRedirect(frontendUrl + "/auth?error=" +
                                     java.net.URLEncoder.encode(
                                             errorMessage != null ? errorMessage : "OAuth2 authentication failed",
                                             java.nio.charset.StandardCharsets.UTF_8));
