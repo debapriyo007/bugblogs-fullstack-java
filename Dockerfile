@@ -1,3 +1,4 @@
+# Triggering rebuild with correct git remote
 # Stage 1: Build Frontend with memory constraints
 FROM node:20-alpine AS frontend-builder
 WORKDIR /app/frontend
