@@ -160,9 +160,20 @@ export default function Header({ mobileMenuOpen, setMobileMenuOpen, navLinks }) 
             variant="ghost"
             size="icon"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="lg:hidden rounded-full hover:bg-muted"
+            className="lg:hidden rounded-full hover:bg-muted relative"
+            aria-label="Toggle Menu"
           >
-            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            <div className="relative h-5 w-5 flex items-center justify-center">
+              <span className={`absolute h-0.5 w-5 bg-foreground rounded-full transition-all duration-300 ${
+                mobileMenuOpen ? "rotate-45 translate-y-0" : "-translate-y-1.5"
+              }`} />
+              <span className={`absolute h-0.5 w-5 bg-foreground rounded-full transition-opacity duration-300 ${
+                mobileMenuOpen ? "opacity-0" : "opacity-100"
+              }`} />
+              <span className={`absolute h-0.5 w-5 bg-foreground rounded-full transition-all duration-300 ${
+                mobileMenuOpen ? "-rotate-45 translate-y-0" : "translate-y-1.5"
+              }`} />
+            </div>
           </Button>
         </div>
       </div>

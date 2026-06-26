@@ -10,19 +10,21 @@ export default function MobileMenu({ mobileMenuOpen, setMobileMenuOpen, navLinks
   const navigate = useNavigate()
   const location = useLocation()
 
-  if (!mobileMenuOpen) return null
-
   return (
     <>
       {/* Mobile Drawer Backdrop */}
       <div
-        className="lg:hidden fixed inset-0 z-45 bg-black/40 backdrop-blur-sm transition-opacity duration-300"
+        className={`lg:hidden fixed inset-0 z-45 bg-black/45 backdrop-blur-sm transition-opacity duration-300 ${
+          mobileMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        }`}
         onClick={() => setMobileMenuOpen(false)}
       />
 
       {/* Mobile Drawer Panel */}
       <div
-        className={`lg:hidden fixed inset-y-0 right-0 z-50 w-80 bg-white dark:bg-zinc-950 shadow-2xl p-6 flex flex-col gap-6 transition-transform duration-300 ease-in-out`}
+        className={`lg:hidden fixed inset-y-0 right-0 z-50 w-full sm:w-80 bg-white dark:bg-zinc-950 shadow-2xl p-6 flex flex-col gap-6 transition-all duration-300 ease-in-out ${
+          mobileMenuOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0 pointer-events-none"
+        }`}
       >
         {/* Header of Drawer */}
         <div className="flex items-center justify-between border-b border-border pb-4">
@@ -43,7 +45,7 @@ export default function MobileMenu({ mobileMenuOpen, setMobileMenuOpen, navLinks
         </div>
 
         <nav className="flex flex-col gap-3 font-semibold text-sm">
-          {navLinks.map((link) => {
+          {navLinks.map((link, index) => {
             const isBlogs = link.label === "Blogs"
             const isAbout = link.path === "/about"
             const active = (isBlogs && location.pathname === "/") || (isAbout && location.pathname === "/about")
@@ -53,7 +55,12 @@ export default function MobileMenu({ mobileMenuOpen, setMobileMenuOpen, navLinks
                 key={link.label}
                 to={link.path}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`p-3 rounded-xl hover:bg-muted/50 transition-colors ${
+                style={{
+                  transitionDelay: `${mobileMenuOpen ? index * 50 : 0}ms`
+                }}
+                className={`p-3 rounded-xl hover:bg-muted/50 transition-all duration-300 ${
+                  mobileMenuOpen ? "translate-x-0 opacity-100" : "translate-x-4 opacity-0"
+                } ${
                   active
                     ? "text-rose-600 bg-rose-500/10 font-bold"
                     : "text-muted-foreground"
@@ -67,7 +74,12 @@ export default function MobileMenu({ mobileMenuOpen, setMobileMenuOpen, navLinks
             <Link
               to="/admin"
               onClick={() => setMobileMenuOpen(false)}
-              className={`p-3 rounded-xl hover:bg-muted/50 transition-colors flex items-center gap-1.5 ${
+              style={{
+                transitionDelay: `${mobileMenuOpen ? navLinks.length * 50 : 0}ms`
+              }}
+              className={`p-3 rounded-xl hover:bg-muted/50 transition-all duration-300 flex items-center gap-1.5 ${
+                mobileMenuOpen ? "translate-x-0 opacity-100" : "translate-x-4 opacity-0"
+              } ${
                 location.pathname === "/admin"
                   ? "text-foreground bg-muted font-semibold"
                   : "text-muted-foreground"
@@ -81,7 +93,14 @@ export default function MobileMenu({ mobileMenuOpen, setMobileMenuOpen, navLinks
 
         {/* User CTA Mobile */}
         {!user && (
-          <div className="mt-auto border-t border-border pt-4">
+          <div 
+            style={{
+              transitionDelay: `${mobileMenuOpen ? (navLinks.length + 1) * 50 : 0}ms`
+            }}
+            className={`mt-auto border-t border-border pt-4 transition-all duration-300 ${
+              mobileMenuOpen ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+            }`}
+          >
             <Button
               onClick={() => {
                 setMobileMenuOpen(false);
