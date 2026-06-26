@@ -24,6 +24,7 @@ public class EmailServiceImpl implements EmailService {
     private String fromEmail;
 
     @Override
+    @org.springframework.scheduling.annotation.Async
     public void sendOtpEmail(String toEmail, String username, String otp) {
         String subject = "Verify Your bugblogs Account";
         String htmlContent = loadOtpTemplate(username, otp);
@@ -42,10 +43,15 @@ public class EmailServiceImpl implements EmailService {
                 logger.info("Verification OTP HTML email successfully dispatched to: {}", toEmail);
                 emailSent = true;
             } catch (Exception e) {
-                logger.warn("Could not dispatch SMTP email. Falling back to console logging: {}", e.getMessage(), e);
+                logger.warn("Could not dispatch SMTP email: {}. Logging OTP directly.", e.getMessage());
             }
         }
 
+        // Print the OTP in fallback console logs so user can easily sign in even if mail config fails
+        logger.info("\n==================================================\n" +
+                    "FALLBACK OTP CODE FOR {}:\n" +
+                    "OTP: {}\n" +
+                    "==================================================", toEmail, otp);
     }
 
     private String loadOtpTemplate(String username, String otp) {
@@ -60,6 +66,7 @@ public class EmailServiceImpl implements EmailService {
     }
 
     @Override
+    @org.springframework.scheduling.annotation.Async
     public void sendResetPasswordOtpEmail(String toEmail, String username, String otp) {
         String subject = "Reset Your Password";
         String htmlContent = loadResetPasswordTemplate(username, otp);
@@ -75,10 +82,15 @@ public class EmailServiceImpl implements EmailService {
                 mailSender.send(mimeMessage);
                 logger.info("Password reset OTP HTML email successfully dispatched to: {}", toEmail);
             } catch (Exception e) {
-                logger.warn("Could not dispatch password reset SMTP email. Falling back to console logging: {}", e.getMessage(), e);
+                logger.warn("Could not dispatch password reset SMTP email: {}. Logging OTP directly.", e.getMessage());
             }
         }
 
+        // Print the OTP in fallback console logs so user can reset password even if mail config fails
+        logger.info("\n==================================================\n" +
+                    "FALLBACK PASSWORD RESET OTP CODE FOR {}:\n" +
+                    "OTP: {}\n" +
+                    "==================================================", toEmail, otp);
     }
 
     private String loadResetPasswordTemplate(String username, String otp) {
