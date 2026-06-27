@@ -180,11 +180,12 @@
 .code-block-pre {
   @apply bg-zinc-950 p-0 m-0 overflow-x-auto;
   counter-reset: none;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 .code-block-code {
   @apply block py-3 px-4 bg-transparent;
-  font-family: inherit;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   font-size: 0.82rem;
   line-height: 1.45;
 }
@@ -192,6 +193,7 @@
 /* Line rows */
 .code-line {
   @apply flex items-stretch;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   margin: 0;
   padding: 0;
 }
@@ -207,6 +209,7 @@
 
 .line-content {
   @apply flex-1 whitespace-pre;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   line-height: 1.45;
 }
 

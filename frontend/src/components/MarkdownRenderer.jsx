@@ -3,6 +3,59 @@ import { marked } from "marked"
 import hljs from "highlight.js"
 
 /**
+ * Renders HTML lines from highlight.js output without breaking tags spanning multiple lines.
+ */
+function splitHighlightedHtml(highlightedHtml) {
+  const lines = []
+  let currentLine = ""
+  let i = 0
+  const stack = []
+
+  while (i < highlightedHtml.length) {
+    const char = highlightedHtml[i]
+
+    if (char === "<") {
+      const closeIdx = highlightedHtml.indexOf(">", i)
+      if (closeIdx !== -1) {
+        const tag = highlightedHtml.substring(i, closeIdx + 1)
+        currentLine += tag
+        
+        if (tag.startsWith("</")) {
+          stack.pop()
+        } else {
+          stack.push(tag)
+        }
+        i = closeIdx + 1
+        continue
+      }
+    }
+
+    if (char === "\n") {
+      let lineTail = ""
+      for (let j = stack.length - 1; j >= 0; j--) {
+        lineTail += "</span>"
+      }
+      currentLine += lineTail
+      lines.push(currentLine)
+
+      let lineHead = ""
+      for (let j = 0; j < stack.length; j++) {
+        lineHead += stack[j]
+      }
+      currentLine = lineHead
+      i++
+      continue
+    }
+
+    currentLine += char
+    i++
+  }
+
+  lines.push(currentLine)
+  return lines
+}
+
+/**
  * MarkdownRenderer
  * Renders markdown content with IDE-quality code blocks:
  *  - Syntax highlighting (highlight.js)
@@ -32,8 +85,8 @@ export default function MarkdownRenderer({ content, className = "" }) {
           .replace(/>/g, "&gt;")
       }
 
-      // Add line numbers by wrapping each line
-      const lines = highlighted.split("\n")
+      // Add line numbers by wrapping each line safely
+      const lines = splitHighlightedHtml(highlighted)
       // Remove trailing empty line if present
       if (lines[lines.length - 1] === "") lines.pop()
 
