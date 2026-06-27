@@ -1,6 +1,9 @@
 server:
   port: ${PORT:8080}
-  forward-headers-strategy: framework
+  forward-headers-strategy: native
+  tomcat:
+    remoteip:
+      internal-proxies: ".*"
 
 spring:
   profiles:
