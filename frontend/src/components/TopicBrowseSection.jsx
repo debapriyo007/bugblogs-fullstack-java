@@ -282,10 +282,10 @@ export default function TopicBrowseSection({
 
       {/* Category Pills */}
       {(displayFilter === "all" || displayFilter === "categories") && (
-        <div className="flex flex-wrap gap-2 items-center animate-fade-in">
+        <div className="flex overflow-x-auto flex-nowrap md:flex-wrap gap-2 items-center no-scrollbar w-full py-1 select-none animate-fade-in">
           <button
             onClick={handleClearFilters}
-            className={`px-4 py-1.5 rounded-full text-xs font-semibold border transition-all ${
+            className={`px-4 py-1.5 rounded-full text-xs font-semibold border transition-all shrink-0 ${
               !categoryIdVal && !searchVal
                 ? "bg-rose-600 text-white border-rose-600"
                 : "bg-transparent border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:border-rose-300 hover:text-rose-600"
@@ -297,7 +297,7 @@ export default function TopicBrowseSection({
             <button
               key={cat.id}
               onClick={() => handleSelectCategory(cat.id)}
-              className={`px-4 py-1.5 rounded-full text-xs font-semibold border transition-all capitalize ${
+              className={`px-4 py-1.5 rounded-full text-xs font-semibold border transition-all capitalize shrink-0 ${
                 categoryIdVal === cat.id.toString()
                   ? "bg-rose-600 text-white border-rose-600"
                   : "bg-transparent border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:border-rose-300 hover:text-rose-600"
@@ -309,7 +309,7 @@ export default function TopicBrowseSection({
           {(categories || []).length > 8 && (
             <button
               onClick={() => setShowAllCategories(!showAllCategories)}
-              className="text-xs font-bold text-rose-500 hover:text-rose-600 px-3 py-1.5 transition-colors underline underline-offset-2"
+              className="text-xs font-bold text-rose-500 hover:text-rose-600 px-3 py-1.5 transition-colors underline underline-offset-2 shrink-0"
             >
               {showAllCategories ? "Show Less" : `+${(categories || []).length - 8} More`}
             </button>
@@ -319,12 +319,12 @@ export default function TopicBrowseSection({
 
       {/* Tag Cloud */}
       {(displayFilter === "all" || displayFilter === "tags") && (tags || []).length > 0 && (
-        <div className="flex flex-wrap gap-2 items-center animate-fade-in">
+        <div className="flex overflow-x-auto flex-nowrap md:flex-wrap gap-2 items-center no-scrollbar w-full py-1 select-none animate-fade-in">
           {visibleTags.map((tag) => (
             <button
               key={tag.id}
               onClick={() => handleSelectTag(tag.name)}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 hover:border-rose-300 hover:text-rose-600 dark:hover:text-rose-400 transition-all bg-zinc-50 dark:bg-zinc-900/50"
+              className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 hover:border-rose-300 hover:text-rose-600 dark:hover:text-rose-400 transition-all bg-zinc-50 dark:bg-zinc-900/50 shrink-0"
             >
               <Tag className="h-2.5 w-2.5" />
               {tag.name}
@@ -333,7 +333,7 @@ export default function TopicBrowseSection({
           {(tags || []).length > 12 && (
             <button
               onClick={() => setShowAllTags(!showAllTags)}
-              className="text-xs font-bold text-rose-500 hover:text-rose-600 px-3 py-1.5 transition-colors underline underline-offset-2"
+              className="text-xs font-bold text-rose-500 hover:text-rose-600 px-3 py-1.5 transition-colors underline underline-offset-2 shrink-0"
             >
               {showAllTags ? "Show Less" : `+${(tags || []).length - 12} More`}
             </button>
