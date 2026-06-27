@@ -1,4 +1,3 @@
-import * as React from "react"
 import { Users, BookOpen, Eye, TrendingUp, BarChart3 } from "lucide-react"
 import { Card, CardContent, CardTitle, CardDescription } from "@/components/ui/card"
 import LineChart from "./LineChart"
@@ -49,50 +48,54 @@ export default function AdminOverview({
     <div className="space-y-6 animate-fade-in">
       {/* KPI Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="border border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-950/60 backdrop-blur-sm shadow-none rounded-2xl transition-all duration-200">
+        {/* Total Members */}
+        <Card className="border border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-950/60 backdrop-blur-sm shadow-none rounded-2xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:shadow-blue-500/5 hover:border-blue-500/25 group">
           <CardContent className="pt-6 flex items-center justify-between">
             <div className="space-y-1">
               <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Total Members</span>
               <h3 className="text-2xl font-extrabold text-foreground">{userCount}</h3>
             </div>
-            <div className="h-9 w-9 rounded-lg bg-rose-50 dark:bg-rose-950/30 flex items-center justify-center border border-rose-100 dark:border-rose-950/50">
-              <Users className="h-4 w-4 text-rose-600 dark:text-rose-400" />
+            <div className="h-9 w-9 rounded-lg bg-blue-50 dark:bg-blue-950/30 flex items-center justify-center border border-blue-100 dark:border-blue-950/50 transition-colors duration-300 group-hover:bg-blue-500 group-hover:text-white group-hover:border-blue-500">
+              <Users className="h-4 w-4 text-blue-600 dark:text-blue-400 group-hover:text-white transition-colors duration-300" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-950/60 backdrop-blur-sm shadow-none rounded-2xl transition-all duration-200">
+        {/* Total Blogs */}
+        <Card className="border border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-950/60 backdrop-blur-sm shadow-none rounded-2xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:shadow-emerald-500/5 hover:border-emerald-500/25 group">
           <CardContent className="pt-6 flex items-center justify-between">
             <div className="space-y-1">
               <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Total Blogs</span>
               <h3 className="text-2xl font-extrabold text-foreground">{blogsTotalElements}</h3>
             </div>
-            <div className="h-9 w-9 rounded-lg bg-rose-50 dark:bg-rose-950/30 flex items-center justify-center border border-rose-100 dark:border-rose-950/50">
-              <BookOpen className="h-4 w-4 text-rose-600 dark:text-rose-400" />
+            <div className="h-9 w-9 rounded-lg bg-emerald-50 dark:bg-emerald-950/30 flex items-center justify-center border border-emerald-100 dark:border-emerald-950/50 transition-colors duration-300 group-hover:bg-emerald-500 group-hover:text-white group-hover:border-emerald-500">
+              <BookOpen className="h-4 w-4 text-emerald-600 dark:text-emerald-400 group-hover:text-white transition-colors duration-300" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-950/60 backdrop-blur-sm shadow-none rounded-2xl transition-all duration-200">
+        {/* Total Reads */}
+        <Card className="border border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-950/60 backdrop-blur-sm shadow-none rounded-2xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:shadow-violet-500/5 hover:border-violet-500/25 group">
           <CardContent className="pt-6 flex items-center justify-between">
             <div className="space-y-1">
               <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Total Reads</span>
               <h3 className="text-2xl font-extrabold text-foreground">{totalViews.toLocaleString()}</h3>
             </div>
-            <div className="h-9 w-9 rounded-lg bg-rose-50 dark:bg-rose-950/30 flex items-center justify-center border border-rose-100 dark:border-rose-950/50">
-              <Eye className="h-4 w-4 text-rose-600 dark:text-rose-400" />
+            <div className="h-9 w-9 rounded-lg bg-violet-50 dark:bg-violet-950/30 flex items-center justify-center border border-violet-100 dark:border-violet-950/50 transition-colors duration-300 group-hover:bg-violet-500 group-hover:text-white group-hover:border-violet-500">
+              <Eye className="h-4 w-4 text-violet-600 dark:text-violet-400 group-hover:text-white transition-colors duration-300" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-950/60 backdrop-blur-sm shadow-none rounded-2xl transition-all duration-200">
+        {/* Avg Views */}
+        <Card className="border border-zinc-200 dark:border-zinc-800 bg-white/60 dark:bg-zinc-950/60 backdrop-blur-sm shadow-none rounded-2xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md hover:shadow-amber-500/5 hover:border-amber-500/25 group">
           <CardContent className="pt-6 flex items-center justify-between">
             <div className="space-y-1">
               <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider">Avg views / blog</span>
               <h3 className="text-2xl font-extrabold text-foreground">{avgViews}</h3>
             </div>
-            <div className="h-9 w-9 rounded-lg bg-rose-50 dark:bg-rose-950/30 flex items-center justify-center border border-rose-100 dark:border-rose-950/50">
-              <TrendingUp className="h-4 w-4 text-rose-600 dark:text-rose-400" />
+            <div className="h-9 w-9 rounded-lg bg-amber-50 dark:bg-amber-950/30 flex items-center justify-center border border-amber-100 dark:border-amber-950/50 transition-colors duration-300 group-hover:bg-amber-500 group-hover:text-white group-hover:border-amber-500">
+              <TrendingUp className="h-4 w-4 text-amber-600 dark:text-amber-400 group-hover:text-white transition-colors duration-300" />
             </div>
           </CardContent>
         </Card>
