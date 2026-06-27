@@ -18,6 +18,7 @@ spring:
           google:
             client-id: your-google-client-id
             client-secret: your-google-client-secret
+            redirect-uri: ${GOOGLE_REDIRECT_URI:{baseUrl}/login/oauth2/code/{registrationId}}
   mail:
     host: smtp-relay.brevo.com
     port: 587

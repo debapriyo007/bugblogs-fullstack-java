@@ -160,6 +160,7 @@ For deployments or container overrides, configure the variables listed below:
 | `JWT_EXPIRATION` | JWT token expiration time (in ms) | `86400000` (1 day) |
 | `GOOGLE_CLIENT_ID` | Google Console OAuth Client ID | `your-google-client-id` |
 | `GOOGLE_CLIENT_SECRET` | Google Console OAuth Client Secret | `your-google-client-secret` |
+| `GOOGLE_REDIRECT_URI` | Google OAuth redirect URI override | `http://localhost:8080/login/oauth2/code/google` |
 | `MAIL_HOST` | SMTP Server Host Address | `smtp.gmail.com` or Brevo SMTP |
 | `MAIL_PORT` | SMTP Server Connection Port | `587` |
 | `MAIL_USERNAME` | Mailer account username | `example@gmail.com` |
