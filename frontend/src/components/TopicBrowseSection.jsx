@@ -36,8 +36,8 @@ export default function TopicBrowseSection({
   const [showAllCategories, setShowAllCategories] = React.useState(false)
   const [showAllTags, setShowAllTags] = React.useState(false)
 
-  const visibleCategories = showAllCategories ? (categories || []) : (categories || []).slice(0, 5)
-  const visibleTags = showAllTags ? (tags || []) : (tags || []).slice(0, 5)
+  const visibleCategories = showAllCategories ? (categories || []) : (categories || []).slice(0, 8)
+  const visibleTags = showAllTags ? (tags || []) : (tags || []).slice(0, 12)
 
   // Add Category Handler
   const handleAddCategory = async (e) => {
@@ -293,7 +293,7 @@ export default function TopicBrowseSection({
           >
             All
           </button>
-          {visibleCategories.map((cat) => (
+          {visibleCategories.map((cat, idx) => (
             <button
               key={cat.id}
               onClick={() => handleSelectCategory(cat.id)}
@@ -301,7 +301,7 @@ export default function TopicBrowseSection({
                 categoryIdVal === cat.id.toString()
                   ? "bg-rose-600 text-white border-rose-600"
                   : "bg-transparent border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:border-rose-300 hover:text-rose-600"
-              }`}
+              } ${!showAllCategories && idx >= 5 ? "hidden md:inline-flex" : "inline-flex"}`}
             >
               {cat.name}
             </button>
@@ -309,9 +309,18 @@ export default function TopicBrowseSection({
           {(categories || []).length > 5 && (
             <button
               onClick={() => setShowAllCategories(!showAllCategories)}
-              className="text-xs font-bold text-rose-500 hover:text-rose-600 px-3 py-1.5 transition-colors underline underline-offset-2"
+              className={`text-xs font-bold text-rose-500 hover:text-rose-600 px-3 py-1.5 transition-colors underline underline-offset-2 ${
+                (categories || []).length <= 8 ? "md:hidden" : ""
+              }`}
             >
-              {showAllCategories ? "Show Less" : `+${(categories || []).length - 5} More`}
+              {showAllCategories ? (
+                "Show Less"
+              ) : (
+                <>
+                  <span className="md:hidden">+{(categories || []).length - 5} More</span>
+                  <span className="hidden md:inline">+{(categories || []).length - 8} More</span>
+                </>
+              )}
             </button>
           )}
         </div>
@@ -320,11 +329,13 @@ export default function TopicBrowseSection({
       {/* Tag Cloud */}
       {(displayFilter === "all" || displayFilter === "tags") && (tags || []).length > 0 && (
         <div className="flex flex-wrap gap-2 items-center w-full select-none animate-fade-in">
-          {visibleTags.map((tag) => (
+          {visibleTags.map((tag, idx) => (
             <button
               key={tag.id}
               onClick={() => handleSelectTag(tag.name)}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 hover:border-rose-300 hover:text-rose-600 dark:hover:text-rose-400 transition-all bg-zinc-50 dark:bg-zinc-900/50"
+              className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 hover:border-rose-300 hover:text-rose-600 dark:hover:text-rose-400 transition-all bg-zinc-50 dark:bg-zinc-900/50 ${
+                !showAllTags && idx >= 5 ? "hidden md:flex" : "flex"
+              }`}
             >
               <Tag className="h-2.5 w-2.5" />
               {tag.name}
@@ -333,9 +344,18 @@ export default function TopicBrowseSection({
           {(tags || []).length > 5 && (
             <button
               onClick={() => setShowAllTags(!showAllTags)}
-              className="text-xs font-bold text-rose-500 hover:text-rose-600 px-3 py-1.5 transition-colors underline underline-offset-2"
+              className={`text-xs font-bold text-rose-500 hover:text-rose-600 px-3 py-1.5 transition-colors underline underline-offset-2 ${
+                (tags || []).length <= 12 ? "md:hidden" : ""
+              }`}
             >
-              {showAllTags ? "Show Less" : `+${(tags || []).length - 5} More`}
+              {showAllTags ? (
+                "Show Less"
+              ) : (
+                <>
+                  <span className="md:hidden">+{(tags || []).length - 5} More</span>
+                  <span className="hidden md:inline">+{(tags || []).length - 12} More</span>
+                </>
+              )}
             </button>
           )}
         </div>
